@@ -1,0 +1,3739 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Magic Auction 2.0</title>
+
+<style>
+
+*{
+ box-sizing:border-box
+}
+
+body{
+ margin:0;
+ background:#0b1020;
+ color:white;
+ font-family:Arial,sans-serif
+}
+
+.app{
+ max-width:520px;
+ min-height:100vh;
+ margin:auto;
+ background:#151b2c;
+ padding-bottom:85px
+}
+
+header{
+ padding:16px;
+ background:linear-gradient(135deg,#31236d,#15264b);
+ position:sticky;
+ top:0;
+ z-index:5
+}
+
+.title{
+ font-size:25px;
+ font-weight:900
+}
+
+.coins{
+ margin-top:10px;
+ background:#090e19;
+ padding:12px;
+ border-radius:14px;
+ color:#ffd84d;
+ font-weight:bold
+}
+
+.page{
+ padding:15px
+}
+
+.hero{
+ background:linear-gradient(135deg,#5535b7,#167fca);
+ padding:20px;
+ border-radius:20px;
+ margin-bottom:15px
+}
+
+.card{
+ background:#20283b;
+ border:1px solid #303a52;
+ padding:15px;
+ border-radius:17px;
+ margin:10px 0
+}
+
+.row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px
+}
+
+button{
+ border:0;
+ padding:11px 15px;
+ border-radius:12px;
+ background:#5869ff;
+ color:white;
+ font-weight:bold;
+ margin:3px
+}
+
+button:active{
+ transform:scale(.96)
+}
+
+button:disabled{
+ background:#555b6d;
+ opacity:.6
+}
+
+.danger{
+ background:#d94d5c
+}
+
+.green{
+ background:#16a66c
+}
+
+.gold{
+ background:#d49518
+}
+
+.purple{
+ background:#8a4dff
+}
+
+.muted{
+ color:#aab4c8;
+ font-size:13px
+}
+
+.icon{
+ font-size:48px
+}
+
+.price{
+ color:#ffd84d;
+ font-weight:bold
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px
+}
+
+.item{
+ background:#20283b;
+ padding:14px;
+ border-radius:16px;
+ text-align:center
+}
+
+.figure{
+ position:relative;
+ overflow:hidden
+}
+
+.figure .glow{
+ position:absolute;
+ width:90px;
+ height:90px;
+ border-radius:50%;
+ background:#ffffff15;
+ top:-30px;
+ right:-30px
+}
+
+.timer{
+ text-align:center;
+ font-size:38px;
+ font-weight:900;
+ color:#ffd84d;
+ margin:10px
+}
+
+.bidbox{
+ display:flex;
+ gap:8px
+}
+
+.bidbox button{
+ flex:1
+}
+
+.bot{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:10px;
+ margin:6px 0;
+ background:#171d2c;
+ border-radius:12px
+}
+
+.avatarPhoto{
+ width:50px;
+ height:50px;
+ border-radius:50%;
+ object-fit:cover;
+ border:2px solid #5869ff;
+ background:#20283b
+}
+
+.playerPhoto{
+ width:70px;
+ height:70px;
+ border-radius:50%;
+ object-fit:cover;
+ border:3px solid #ffd84d;
+ background:#20283b
+}
+
+.log{
+ height:150px;
+ overflow:auto;
+ background:#080d17;
+ padding:10px;
+ border-radius:12px;
+ font-size:12px
+}
+
+.win{
+ color:#63f2a0;
+ font-weight:bold
+}
+
+.lose{
+ color:#ff6677;
+ font-weight:bold
+}
+
+.sellBox{
+ background:#171d2c;
+ padding:10px;
+ border-radius:12px;
+ margin-top:8px
+}
+
+.sellBox input{
+ width:100%;
+ padding:11px;
+ border-radius:10px;
+ border:1px solid #3b4660;
+ background:#0b1020;
+ color:white;
+ font-size:16px
+}
+
+.stat{
+ background:#171d2c;
+ padding:13px;
+ border-radius:13px;
+ text-align:center
+}
+
+.stat b{
+ font-size:21px
+}
+
+.progress{
+ height:12px;
+ background:#080d17;
+ border-radius:20px;
+ overflow:hidden;
+ margin:8px 0
+}
+
+.progress span{
+ display:block;
+ height:100%;
+ background:linear-gradient(90deg,#5869ff,#c05cff)
+}
+
+.badge{
+ display:inline-block;
+ padding:5px 8px;
+ border-radius:9px;
+ background:#303a52;
+ font-size:11px;
+ font-weight:bold
+}
+
+.special{
+ background:linear-gradient(135deg,#3c1c66,#182e5d);
+ border:1px solid #8a4dff
+}
+
+.notice{
+ padding:12px;
+ background:#101827;
+ border-radius:12px;
+ margin:8px 0
+}
+
+.achievement{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:12px;
+ margin:7px 0;
+ border-radius:12px;
+ background:#171d2c
+}
+
+.achievement.done{
+ border:1px solid #ffd84d
+}
+
+.aicon{
+ font-size:28px
+}
+
+.rarity-Common{
+ border:1px solid #8d98aa
+}
+
+.rarity-Rare{
+ border:1px solid #54a8ff
+}
+
+.rarity-Epic{
+ border:1px solid #a866ff
+}
+
+.rarity-Legendary{
+ border:1px solid #ffd84d
+}
+
+.rarity-Mythic{
+ border:1px solid #ff5cf0;
+ box-shadow:0 0 15px #ff35e633
+}
+
+.market-up{
+ color:#63f2a0
+}
+
+.market-down{
+ color:#ff6677
+}
+
+.nav{
+ position:fixed;
+ bottom:0;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(520px,100%);
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ background:#0d1321;
+ border-top:1px solid #30384c;
+ z-index:10
+}
+
+.nav button{
+ background:transparent;
+ border-radius:0;
+ color:#9faac0;
+ font-size:11px;
+ padding:9px 3px;
+ margin:0
+}
+
+.nav button.active{
+ color:white;
+ background:#252d44
+}
+
+@media(max-width:380px){
+
+ .grid{
+  grid-template-columns:1fr
+ }
+
+ .title{
+  font-size:21px
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+ <div class="title">
+  🔮 Magic Auction
+ </div>
+
+ <div class="coins">
+  🪙 <span id="coins">30,000</span> Coins
+ </div>
+
+</header>
+
+<main id="page" class="page"></main>
+
+<nav class="nav">
+
+ <button id="nav-lobby"
+ onclick="showPage('lobby')">
+ 🏠<br>Lobby
+ </button>
+
+ <button id="nav-auction"
+ onclick="showPage('auction')">
+ 🔨<br>Lelang
+ </button>
+
+ <button id="nav-warehouse"
+ onclick="showPage('warehouse')">
+ 🎒<br>Gudang
+ </button>
+
+ <button id="nav-collection"
+ onclick="showPage('collection')">
+ 👑<br>Koleksi
+ </button>
+
+ <button id="nav-shop"
+ onclick="showPage('shop')">
+ 🏪<br>Toko
+ </button>
+
+</nav>
+
+</div>
+
+<input
+ id="importFile"
+ type="file"
+ accept=".json,application/json"
+ style="display:none"
+>
+
+<script>
+
+/* =====================================================
+   PLAYER
+===================================================== */
+
+const playerProfile={
+
+ name:"Kamu",
+
+ photo:"player.jpg",
+
+ icon:"🧙"
+
+};
+
+
+/* =====================================================
+   FIGURINE
+===================================================== */
+
+const s=[
+
+ {
+  id:"abu",
+  name:"Figurin Abu",
+  icon:"🗿",
+  value:1000,
+  income:125,
+  rarity:"Common"
+ },
+
+ {
+  id:"ungu",
+  name:"Figurin Ungu",
+  icon:"🧙",
+  value:5000,
+  income:250,
+  rarity:"Rare"
+ },
+
+ {
+  id:"emas",
+  name:"Figurin Emas",
+  icon:"👑",
+  value:15000,
+  income:500,
+  rarity:"Epic"
+ },
+
+ {
+  id:"merah",
+  name:"Figurin Merah",
+  icon:"🐉",
+  value:40000,
+  income:750,
+  rarity:"Legendary"
+ }
+
+];
+
+
+/* =====================================================
+   TOKO FIGURINE LANGKA
+===================================================== */
+
+const tokoFigurine=[
+
+ {
+  name:"Figurin Naga Emas",
+  icon:"🐉👑",
+  value:250000,
+  income:3500,
+  rarity:"Legendary"
+ },
+
+ {
+  name:"Figurin Phoenix",
+  icon:"🔥🦅",
+  value:400000,
+  income:5500,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Dewa Petir",
+  icon:"⚡👑",
+  value:750000,
+  income:9000,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Naga Kosmik",
+  icon:"🐲🌌",
+  value:1200000,
+  income:15000,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Malaikat Emas",
+  icon:"😇✨",
+  value:1800000,
+  income:22000,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Raja Kegelapan",
+  icon:"💀👑",
+  value:2500000,
+  income:30000,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Penguasa Dimensi",
+  icon:"🌀👑",
+  value:5000000,
+  income:50000,
+  rarity:"Mythic"
+ },
+
+ {
+  name:"Figurin Dewa Alam Semesta",
+  icon:"🌌🔱",
+  value:10000000,
+  income:100000,
+  rarity:"Mythic"
+ }
+
+];
+
+
+/* =====================================================
+   ITEM AUCTION
+===================================================== */
+
+const items=[
+
+ ["Taik","💩",100,"Epic"],
+ ["Fuck You","🖕",1000,"Rare"],
+ ["Pedang Kristal","⚔️",2500,"Rare"],
+ ["Perisai Naga","🛡️",4000,"Rare"],
+ ["Mata Sihir","👁️",6500,"Epic"],
+ ["Busur Langit","🏹",9000,"Epic"],
+ ["Mahkota Bulan","👑",14000,"Legendary"],
+ ["Relik Emas","🏺",18000,"Legendary"],
+ ["Kapak Titan","🪓",24000,"Epic"],
+ ["Cincin Astral","💍",30000,"Legendary"],
+ ["Pedang Phoenix","🔥",42000,"Mythic"],
+ ["Tombak Inferno","🔱",50000,"Mythic"],
+ ["Batu Naga","💎",65000,"Mythic"],
+ ["Kristal Raja","🔮",85000,"Mythic"],
+ ["Tengkorak Kepala 3","☠️💀☠️",100000,"Mythic"],
+ ["Pedang Petir","⚡",115000,"Mythic"],
+ ["Perisai Matahari","☀️🛡️",125000,"Legendary"],
+ ["Tongkat Bintang","🌟",140000,"Mythic"],
+ ["Cincin Api","💍🔥",155000,"Legendary"],
+ ["Busur Phoenix","🏹🔥",170000,"Mythic"],
+ ["Helm Titan","⛑️",185000,"Epic"],
+ ["Kapak Vulkanik","🪓🌋",200000,"Mythic"],
+ ["Kristal Es","❄️💎",220000,"Epic"],
+ ["Pedang Es Abadi","❄️⚔️",240000,"Mythic"],
+ ["Mahkota Naga","🐉👑",260000,"Mythic"],
+ ["Orb Kegelapan","🌑🔮",280000,"Mythic"],
+ ["Batu Matahari","☀️💎",300000,"Legendary"],
+ ["Tombak Petir","⚡🔱",325000,"Mythic"],
+ ["Perisai Kosmik","🌌🛡️",350000,"Mythic"],
+ ["Cincin Waktu","⏳💍",375000,"Mythic"],
+ ["Pedang Dimensi","🌀⚔️",400000,"Mythic"],
+ ["Kristal Naga","🐉💎",425000,"Mythic"],
+ ["Tongkat Kehidupan","🌿✨",450000,"Legendary"],
+ ["Mahkota Dewa","👑✨",500000,"Mythic"],
+ ["Pedang Malaikat","😇⚔️",550000,"Mythic"],
+ ["Sayap Emas","🪽✨",600000,"Legendary"],
+ ["Orb Surgawi","🌌🔮",650000,"Mythic"],
+ ["Tombak Dewa","🔱✨",700000,"Mythic"],
+ ["Perisai Kaisar","🛡️👑",750000,"Legendary"],
+ ["Pedang Samurai Naga","🐉🗡️",800000,"Mythic"],
+ ["Kristal Dimensi","🌀💎",850000,"Mythic"],
+ ["Mata Naga Purba","👁️🐉",900000,"Mythic"],
+ ["Relik Kehancuran","💀🏺",1000000,"Mythic"],
+ ["Mahkota Kosmik","🌌👑",1200000,"Mythic"],
+ ["Pedang Penghancur Dunia","🌍⚔️",1500000,"Mythic"],
+ ["Inti Alam Semesta","🌌💠",2000000,"Mythic"]
+
+];
+
+
+/* =====================================================
+   BOT
+===================================================== */
+
+const botData=[
+
+ {
+  name:"kea becek",
+  icon:"🧛",
+  photo:"bot1.jpg",
+  money:650000,
+  aggression:.45
+ },
+
+ {
+  name:"Kamplonh",
+  icon:"🏹",
+  photo:"bot2.jpg",
+  money:228997,
+  aggression:.40
+ },
+
+ {
+  name:"Kimpol°✓",
+  icon:"🗡️",
+  photo:"bot3.jpg",
+  money:366396,
+  aggression:.45
+ },
+
+ {
+  name:"Larking™",
+  icon:"🔫",
+  photo:"bot4.jpg",
+  money:717197,
+  aggression:.40
+ }
+
+];
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+const worlds=[
+
+ {id:1,name:"Eruditio",need:0,fee:500},
+
+ {id:2,name:"Dawnlight",need:50000,fee:2000},
+
+ {id:3,name:"World Auction",need:200000,fee:5000},
+
+ {id:4,name:"Dragon Palace",need:1000000,fee:15000},
+
+ {id:5,name:"Cosmic Realm",need:5000000,fee:50000},
+
+ {id:6,name:"Divine Realm",need:20000000,fee:150000}
+
+];
+
+
+/* =====================================================
+   GAME STATE
+===================================================== */
+
+let game=
+JSON.parse(
+ localStorage.getItem("magicAuction2")||"null"
+);
+
+if(!game){
+
+ game={
+
+  coins:30000,
+
+  owned:[],
+
+  figs:[0,0,0,0],
+
+  rareFigs:[],
+
+  world:1,
+
+  xp:0,
+
+  level:1,
+
+  lastIncomeTime:Date.now(),
+
+  lastDailyClaim:0,
+
+  dailyStreak:0,
+
+  claimedAchievements:[],
+
+  market:{},
+
+  stats:{
+   auctionWins:0,
+   auctionLosses:0,
+   auctionsPlayed:0,
+   buyFig:0,
+   sellFig:0,
+   mysteryOpened:0,
+   dailyClaims:0,
+   totalEarned:0,
+   totalSpent:0
+  }
+
+ }
+
+}
+
+
+/* =====================================================
+   KOMPATIBILITAS SAVE LAMA
+===================================================== */
+
+if(!Array.isArray(game.owned))
+ game.owned=[];
+
+if(!Array.isArray(game.figs))
+ game.figs=[0,0,0,0];
+
+while(game.figs.length<4)
+ game.figs.push(0);
+
+if(!Array.isArray(game.rareFigs))
+ game.rareFigs=[];
+
+if(!Array.isArray(game.claimedAchievements))
+ game.claimedAchievements=[];
+
+if(!game.market)
+ game.market={};
+
+if(!game.stats)
+ game.stats={};
+
+game.coins=Number(game.coins);
+
+if(!Number.isFinite(game.coins))
+ game.coins=30000;
+
+game.world=Number(game.world)||1;
+
+game.xp=Number(game.xp)||0;
+
+game.level=Number(game.level)||1;
+
+game.lastIncomeTime=
+Number(game.lastIncomeTime)||Date.now();
+
+game.lastDailyClaim=
+Number(game.lastDailyClaim)||0;
+
+game.dailyStreak=
+Number(game.dailyStreak)||0;
+
+game.stats.auctionWins=
+Number(game.stats.auctionWins)||0;
+
+game.stats.auctionLosses=
+Number(game.stats.auctionLosses)||0;
+
+game.stats.auctionsPlayed=
+Number(game.stats.auctionsPlayed)||0;
+
+game.stats.buyFig=
+Number(game.stats.buyFig)||0;
+
+game.stats.sellFig=
+Number(game.stats.sellFig)||0;
+
+game.stats.mysteryOpened=
+Number(game.stats.mysteryOpened)||0;
+
+game.stats.dailyClaims=
+Number(game.stats.dailyClaims)||0;
+
+game.stats.totalEarned=
+Number(game.stats.totalEarned)||0;
+
+game.stats.totalSpent=
+Number(game.stats.totalSpent)||0;
+
+
+let auction=null;
+
+let auctionTimer=null;
+
+
+/* =====================================================
+   UTILITAS
+===================================================== */
+
+function money(n){
+
+ n=Number(n);
+
+ if(!Number.isFinite(n))
+  n=0;
+
+ return Math.floor(n)
+ .toLocaleString("id-ID");
+
+}
+
+
+function save(){
+
+ localStorage.setItem(
+  "magicAuction2",
+  JSON.stringify(game)
+ );
+
+}
+
+
+function updateCoins(){
+
+ const el=
+ document.getElementById("coins");
+
+ if(el)
+  el.textContent=money(game.coins);
+
+}
+
+
+/* =====================================================
+   INCOME PER JAM
+===================================================== */
+
+function totalIncome(){
+
+ let total=0;
+
+ game.figs.forEach(
+  (count,index)=>{
+
+   if(s[index]){
+
+    total+=
+    (Number(count)||0)*
+    s[index].income*
+    3600;
+
+   }
+
+  }
+ );
+
+
+game.rareFigs.forEach(fig=>{
+
+ total+=
+ (Number(fig.income)||0)*
+ (Number(fig.qty)||1)*
+ 3600;
+
+});
+
+
+ return total;
+
+}
+
+
+/* =====================================================
+   PASSIVE INCOME OFFLINE
+===================================================== */
+
+function collectPassiveIncome(){
+
+ const now=Date.now();
+
+ const last=
+ Number(game.lastIncomeTime)||now;
+
+ const hours=
+ Math.floor(
+  (now-last)/3600000
+ );
+
+ if(hours<=0)
+  return;
+
+ const income=
+ totalIncome();
+
+ const payout=
+ income*hours;
+
+ if(payout>0){
+
+  game.coins+=payout;
+
+  game.stats.totalEarned+=payout;
+
+ }
+
+ game.lastIncomeTime=
+ last+(hours*3600000);
+
+ save();
+
+ updateCoins();
+
+ if(payout>0){
+
+  alert(
+   "⚡ PASSIVE INCOME!\n\n"+
+   "+🪙 "+money(payout)+
+   " Coins\n\n"+
+   hours+" jam offline"
+  );
+
+ }
+
+}
+
+
+/* =====================================================
+   TOTAL ASET
+===================================================== */
+
+function totalAssets(){
+
+ let total=game.coins;
+
+
+ game.figs.forEach(
+  (count,index)=>{
+
+   if(s[index]){
+
+    total+=
+    (Number(count)||0)*
+    s[index].value;
+
+   }
+
+  }
+ );
+
+
+ game.rareFigs.forEach(fig=>{
+
+  total+=
+  (Number(fig.qty)||1)*
+  Number(fig.value||0);
+
+ });
+
+
+ game.owned.forEach(item=>{
+
+  total+=
+  Number(item[2])||0;
+
+ });
+
+
+ return total;
+
+}
+
+
+function totalOwnedCount(){
+
+ let total=
+ game.figs.reduce(
+  (a,b)=>a+(Number(b)||0),
+  0
+ );
+
+ game.rareFigs.forEach(fig=>{
+
+  total+=Number(fig.qty)||1;
+
+ });
+
+ total+=game.owned.length;
+
+ return total;
+
+}
+
+
+function countMythic(){
+
+ let n=0;
+
+ game.owned.forEach(item=>{
+
+  if(item[3]==="Mythic")
+   n++;
+
+ });
+
+ game.rareFigs.forEach(fig=>{
+
+  if(fig.rarity==="Mythic")
+   n+=Number(fig.qty)||1;
+
+ });
+
+ return n;
+
+}
+
+
+/* =====================================================
+   XP
+===================================================== */
+
+function gainXP(amount){
+
+ game.xp+=Number(amount)||0;
+
+ let need=
+ 1000+
+ (game.level-1)*750;
+
+ while(game.xp>=need){
+
+  game.xp-=need;
+
+  game.level++;
+
+  need=
+   1000+
+   (game.level-1)*750;
+
+  alert(
+   "🎉 LEVEL UP!\n\n"+
+   "Sekarang Level "+
+   game.level+"!"
+  );
+
+ }
+
+ save();
+
+}
+
+
+/* =====================================================
+   NAVIGASI
+===================================================== */
+
+function showPage(page){
+
+ document
+ .querySelectorAll(".nav button")
+ .forEach(
+  x=>x.classList.remove("active")
+ );
+
+ const nav=
+ document.getElementById(
+  "nav-"+page
+ );
+
+ if(nav)
+  nav.classList.add("active");
+
+
+ if(page==="lobby")
+  lobby();
+
+ else if(page==="auction")
+  auctionPage();
+
+ else if(page==="warehouse")
+  warehouse();
+
+ else if(page==="collection")
+  collection();
+
+ else if(page==="shop")
+  openRareShop();
+
+ else
+  lobby();
+
+
+ updateCoins();
+
+}
+
+
+/* =====================================================
+   LOBBY
+===================================================== */
+
+function lobby(){
+
+ const need=
+ 1000+
+ (game.level-1)*750;
+
+ const percent=
+ Math.min(
+  100,
+  (game.xp/need)*100
+ );
+
+
+ document.getElementById("page").innerHTML=`
+
+ <div class="hero">
+
+  <div class="row">
+
+   <div>
+
+    <h2>🔮 Magic Auction</h2>
+
+    <p>
+     Kumpulkan item,
+     menangkan lelang,
+     dan bangun koleksi.
+    </p>
+
+   </div>
+
+   <img
+    class="playerPhoto"
+    src="${playerProfile.photo}"
+    onerror="this.style.display='none'"
+   >
+
+  </div>
+
+
+  <div class="card">
+
+   <b>👤 ${playerProfile.name}</b>
+
+   <div class="muted">
+    Level ${game.level}
+   </div>
+
+   <div class="progress">
+
+    <span style="width:${percent}%"></span>
+
+   </div>
+
+   <div class="muted">
+
+    ${money(game.xp)}
+    /
+    ${money(need)}
+    XP
+
+   </div>
+
+  </div>
+
+
+  <b>
+   ⚡ +${money(totalIncome())}/jam
+  </b>
+
+ </div>
+
+
+ <div class="grid">
+
+  <div class="stat">
+   <b>🪙 ${money(game.coins)}</b>
+   <div class="muted">Coins</div>
+  </div>
+
+  <div class="stat">
+   <b>💰 ${money(totalAssets())}</b>
+   <div class="muted">Total Aset</div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.auctionWins}</b>
+   <div class="muted">Menang</div>
+  </div>
+
+  <div class="stat">
+   <b>${totalOwnedCount()}</b>
+   <div class="muted">Koleksi</div>
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>🎁 Daily Reward</h3>
+
+  ${dailyRewardHTML()}
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>🌎 World</h3>
+
+  ${worlds.map(worldHTML).join("")}
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>🏆 Achievement</h3>
+
+  <button onclick="showAchievements()">
+   🏆 Achievement
+  </button>
+
+  <button
+   class="gold"
+   onclick="showStats()"
+  >
+   📊 Statistik
+  </button>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>📦 Fitur Tambahan</h3>
+
+  <button
+   class="purple"
+   onclick="showMarket()"
+  >
+   📈 Market
+  </button>
+
+  <button
+   class="gold"
+   onclick="mysteryBox()"
+  >
+   📦 Mystery Box
+  </button>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>💾 Save Game</h3>
+
+  <button onclick="exportSave()">
+   📤 Export
+  </button>
+
+  <button
+   onclick="document.getElementById('importFile').click()"
+  >
+   📥 Import
+  </button>
+
+  <button
+   class="danger"
+   onclick="resetGame()"
+  >
+   🔄 Reset
+  </button>
+
+ </div>
+
+ `;
+
+}
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+function worldHTML(w){
+
+ const open=
+ totalAssets()>=w.need;
+
+ const current=
+ game.world===w.id;
+
+ return `
+
+ <div class="card">
+
+  <div class="row">
+
+   <div>
+
+    <b>
+     ${current?"⭐ ":""}
+     ${w.name}
+    </b>
+
+    <div class="muted">
+
+     Syarat:
+     🪙 ${money(w.need)}
+
+     <br>
+
+     Biaya:
+     🪙 ${money(w.fee)}
+
+    </div>
+
+   </div>
+
+
+   <button
+    ${open?"":"disabled"}
+    onclick="
+     enterWorld(
+      ${w.id},
+      ${w.fee},
+      ${w.need}
+     )
+    "
+   >
+
+    ${current?
+      "Aktif":
+      open?
+      "Masuk":
+      "🔒"}
+
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+
+function enterWorld(id,fee,need){
+
+ if(totalAssets()<need){
+
+  alert(
+   "❌ Aset belum cukup.\n\n"+
+   "Butuh: 🪙 "+money(need)
+  );
+
+  return;
+
+ }
+
+
+ if(game.coins<fee){
+
+  alert(
+   "❌ Coins tidak cukup.\n\n"+
+   "Biaya: 🪙 "+money(fee)
+  );
+
+  return;
+
+ }
+
+
+ game.coins-=fee;
+
+ game.stats.totalSpent+=fee;
+
+ game.world=id;
+
+ gainXP(100);
+
+ save();
+
+ updateCoins();
+
+ alert(
+  "🌎 Masuk World!\n\n"+
+  worlds.find(x=>x.id===id).name
+ );
+
+ showPage("auction");
+
+}
+
+
+/* =====================================================
+   DAILY REWARD
+===================================================== */
+
+function sameDay(a,b){
+
+ const x=new Date(a);
+ const y=new Date(b);
+
+ return(
+  x.getFullYear()===y.getFullYear() &&
+  x.getMonth()===y.getMonth() &&
+  x.getDate()===y.getDate()
+ );
+
+}
+
+
+function yesterday(a,b){
+
+ const x=new Date(a);
+ const y=new Date(b);
+
+ x.setHours(0,0,0,0);
+ y.setHours(0,0,0,0);
+
+ return y-x===86400000;
+
+}
+
+
+function dailyRewardHTML(){
+
+ if(sameDay(
+  game.lastDailyClaim,
+  Date.now()
+ )){
+
+  return `
+   <div class="notice">
+    ✅ Sudah diambil hari ini.
+    <br>
+    <span class="muted">
+     Kembali besok.
+    </span>
+   </div>
+  `;
+
+ }
+
+
+ const rewards=[
+  5000,
+  10000,
+  15000,
+  25000,
+  50000,
+  100000,
+  250000
+ ];
+
+ let day=
+ (game.dailyStreak%7)+1;
+
+ return `
+
+ <div class="notice">
+
+  🎁 Hari ke-${day}
+
+  <br>
+
+  <b>
+   🪙 ${money(rewards[day-1])}
+  </b>
+
+ </div>
+
+ <button
+  class="green"
+  onclick="claimDaily()"
+ >
+  🎁 KLAIM
+ </button>
+
+ `;
+
+}
+
+
+function claimDaily(){
+
+ if(sameDay(
+  game.lastDailyClaim,
+  Date.now()
+ )){
+
+  alert("Reward sudah diambil.");
+
+  return;
+
+ }
+
+
+ if(
+  game.lastDailyClaim &&
+  !yesterday(
+   game.lastDailyClaim,
+   Date.now()
+  )
+ ){
+
+  game.dailyStreak=0;
+
+ }
+
+
+ const rewards=[
+  5000,
+  10000,
+  15000,
+  25000,
+  50000,
+  100000,
+  250000
+ ];
+
+ const day=
+ (game.dailyStreak%7)+1;
+
+ const reward=
+ rewards[day-1];
+
+ game.coins+=reward;
+
+ game.stats.totalEarned+=reward;
+
+ game.stats.dailyClaims++;
+
+ game.dailyStreak++;
+
+ game.lastDailyClaim=Date.now();
+
+ gainXP(150);
+
+ save();
+
+ updateCoins();
+
+ alert(
+  "🎁 DAILY REWARD!\n\n"+
+  "Hari ke-"+day+
+  "\n+🪙 "+money(reward)
+ );
+
+ lobby();
+
+}
+
+
+/* =====================================================
+   AUCTION PAGE
+===================================================== */
+
+function auctionPage(){
+
+ document.getElementById("page").innerHTML=`
+
+ <div class="hero">
+
+  <h2>🔨 Lelang</h2>
+
+  <p>
+   Rebut item dari bot.
+  </p>
+
+  <div class="notice">
+
+   🌎 World:
+   <b>
+    ${worlds.find(
+     w=>w.id===game.world
+    )?.name}
+   </b>
+
+  </div>
+
+  <button onclick="startRandomAuction()">
+   🔨 MULAI AUCTION
+  </button>
+
+  <button
+   class="purple"
+   onclick="startSpecialAuction()"
+  >
+   🔥 AUCTION SPESIAL
+  </button>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>🤖 Bot</h3>
+
+  ${botData.map(bot=>`
+
+   <div class="bot">
+
+    <img
+     class="avatarPhoto"
+     src="${bot.photo}"
+     onerror="this.style.display='none'"
+    >
+
+    <div>
+
+     <b>${bot.name}</b>
+
+     <div class="muted">
+      ${bot.icon}
+      Agresivitas:
+      ${Math.round(bot.aggression*100)}%
+     </div>
+
+    </div>
+
+   </div>
+
+  `).join("")}
+
+ </div>
+
+ `;
+
+}
+
+
+/* =====================================================
+   START AUCTION
+===================================================== */
+
+function startRandomAuction(){
+
+ const pool=
+ items.filter(
+  x=>x[2]<=2000000
+ );
+
+ const item=
+ pool[
+  Math.floor(
+   Math.random()*pool.length
+  )
+ ];
+
+ startAuction(item,false);
+
+}
+
+
+function startSpecialAuction(){
+
+ const pool=
+ items.filter(
+  x=>x[3]==="Mythic"
+ );
+
+ const item=
+ pool[
+  Math.floor(
+   Math.random()*pool.length
+  )
+ ];
+
+ startAuction(item,true);
+
+}
+
+
+function startAuction(item,special){
+
+ if(auction){
+
+  alert(
+   "Auction sedang berlangsung."
+  );
+
+  return;
+
+ }
+
+
+ const count=
+ special?3:
+ Math.random()<.5?2:3;
+
+ const shuffled=
+ [...botData]
+ .sort(
+  ()=>Math.random()-.5
+ );
+
+ const bots=
+ shuffled
+ .slice(0,count)
+ .map(bot=>({
+  ...bot,
+  current:0
+ }));
+
+
+ auction={
+
+  item:item,
+
+  special:special,
+
+  timer:special?60:45,
+
+  currentBid:
+   Number(item[2]),
+
+  leader:"Kamu",
+
+  leaderType:"player",
+
+  bots:bots,
+
+  log:[]
+
+ };
+
+
+ addLog(
+  "🔨 Auction dimulai!"
+ );
+
+ renderAuction();
+
+
+ clearInterval(
+  auctionTimer
+ );
+
+ auctionTimer=
+ setInterval(
+  gameTick,
+  1000
+ );
+
+}
+
+
+/* =====================================================
+   AUCTION LOG
+===================================================== */
+
+function addLog(text){
+
+ if(!auction)
+  return;
+
+ auction.log.unshift(text);
+
+ auction.log=
+ auction.log.slice(0,30);
+
+}
+
+
+/* =====================================================
+   AUCTION TICK
+===================================================== */
+
+function gameTick(){
+
+ if(!auction)
+  return;
+
+ auction.timer--;
+
+ if(Math.random()<.65)
+  botTryBid();
+
+ renderAuction();
+
+ if(auction.timer<=0)
+  finishAuction();
+
+}
+
+
+function nextBid(){
+
+ return Math.max(
+
+  auction.currentBid+500,
+
+  Math.ceil(
+   auction.currentBid*1.10/500
+  )*500
+
+ );
+
+}
+
+
+/* =====================================================
+   BOT BID
+===================================================== */
+
+function botTryBid(){
+
+ if(!auction)
+  return;
+
+ const possible=
+ auction.bots.filter(bot=>{
+
+  const bid=
+   nextBid();
+
+  const max=
+   bot.money*
+   (.45+
+   bot.aggression*.45);
+
+  return bid<=max;
+
+ });
+
+
+ if(!possible.length)
+  return;
+
+
+ const bot=
+ possible[
+  Math.floor(
+   Math.random()*possible.length
+  )
+ ];
+
+
+ const bid=
+ nextBid();
+
+
+ if(Math.random()<bot.aggression){
+
+  auction.currentBid=bid;
+
+  auction.leader=
+   bot.name;
+
+  auction.leaderType=
+   "bot";
+
+  bot.current=
+   bid;
+
+  addLog(
+   bot.icon+
+   " "+
+   bot.name+
+   " bid 🪙 "+
+   money(bid)
+  );
+
+ }
+
+}
+
+
+/* =====================================================
+   PLAYER BID
+===================================================== */
+
+function userBid(){
+
+ if(!auction)
+  return;
+
+ const bid=
+ nextBid();
+
+ if(game.coins<bid){
+
+  alert(
+   "❌ Coins tidak cukup.\n\n"+
+   "Bid: 🪙 "+money(bid)
+  );
+
+  return;
+
+ }
+
+
+ auction.currentBid=
+  bid;
+
+ auction.leader=
+  "Kamu";
+
+ auction.leaderType=
+  "player";
+
+ addLog(
+  "👤 Kamu bid 🪙 "+
+  money(bid)
+ );
+
+ renderAuction();
+
+
+ setTimeout(()=>{
+
+  if(auction)
+   botTryBid();
+
+ },500);
+
+}
+
+
+/* =====================================================
+   RENDER AUCTION
+===================================================== */
+
+function renderAuction(){
+
+ if(!auction)
+  return;
+
+ const a=
+  auction;
+
+ const item=
+  a.item;
+
+
+ document.getElementById("page").innerHTML=`
+
+ <div class="hero ${a.special?"special":""}">
+
+  <span class="badge">
+
+   ${a.special?
+    "🔥 AUCTION SPESIAL":
+    "🔨 AUCTION"}
+
+  </span>
+
+  <h2>
+   ${item[1]}
+   ${item[0]}
+  </h2>
+
+  <div class="muted">
+   ${item[3]}
+  </div>
+
+  <div class="price">
+   Nilai:
+   🪙 ${money(item[2])}
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <div class="timer">
+   ${a.timer}s
+  </div>
+
+  <div class="stat">
+
+   <div class="muted">
+    BID SAAT INI
+   </div>
+
+   <b>
+    🪙 ${money(a.currentBid)}
+   </b>
+
+   <div class="win">
+    Pemimpin:
+    ${a.leader}
+   </div>
+
+  </div>
+
+
+  <div class="bidbox">
+
+   <button onclick="userBid()">
+    💰 BID
+    ${money(nextBid())}
+   </button>
+
+   <button
+    class="danger"
+    onclick="finishAuction()"
+   >
+    🏳️ Menyerah
+   </button>
+
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>🤖 Peserta</h3>
+
+  ${a.bots.map(bot=>`
+
+   <div class="bot">
+
+    <img
+     class="avatarPhoto"
+     src="${bot.photo}"
+     onerror="this.style.display='none'"
+    >
+
+    <div style="flex:1">
+
+     <b>${bot.name}</b>
+
+     <div class="muted">
+      ${bot.icon}
+      Agresivitas
+      ${Math.round(bot.aggression*100)}%
+     </div>
+
+    </div>
+
+    <div class="price">
+     🪙 ${money(bot.current||0)}
+    </div>
+
+   </div>
+
+  `).join("")}
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>📜 Log</h3>
+
+  <div class="log">
+
+   ${a.log
+    .map(x=>`<div>${x}</div>`)
+    .join("")}
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+
+/* =====================================================
+   FINISH AUCTION
+===================================================== */
+
+function finishAuction(){
+
+ if(!auction)
+  return;
+
+ clearInterval(
+  auctionTimer
+ );
+
+ const a=
+  auction;
+
+ auction=null;
+
+
+ if(a.leaderType==="player"){
+
+  if(game.coins<a.currentBid){
+
+   game.stats.auctionLosses++;
+
+   alert(
+    "❌ Coins tidak cukup."
+   );
+
+  }else{
+
+   game.coins-=
+    a.currentBid;
+
+   game.stats.totalSpent+=
+    a.currentBid;
+
+   game.stats.auctionWins++;
+
+
+   game.owned.push([
+
+    a.item[0],
+    a.item[1],
+    a.item[2],
+    a.item[3],
+    a.currentBid
+
+   ]);
+
+
+   gainXP(
+    Math.max(
+     100,
+     Math.floor(
+      a.currentBid/1000
+     )
+    )
+   );
+
+
+   save();
+
+   updateCoins();
+
+
+   alert(
+
+    "🏆 MENANG AUCTION!\n\n"+
+    a.item[1]+
+    " "+
+    a.item[0]+
+    "\n\n"+
+    "Bayar: 🪙 "+
+    money(a.currentBid)+
+    "\n\n"+
+    "Item masuk Gudang."
+
+   );
+
+  }
+
+ }else{
+
+  game.stats.auctionLosses++;
+
+  save();
+
+  alert(
+
+   "😢 KALAH AUCTION\n\n"+
+   a.item[1]+
+   " "+
+   a.item[0]+
+   "\n\n"+
+   "Pemenang: "+
+   a.leader
+
+  );
+
+ }
+
+
+ showPage("auction");
+
+}
+
+
+/* =====================================================
+   GUDANG
+===================================================== */
+
+function warehouse(){
+
+ document.getElementById("page").innerHTML=`
+
+ <div class="hero">
+
+  <h2>🎒 Gudang</h2>
+
+  <p>
+   Semua item hasil auction
+   dan market ada di sini.
+  </p>
+
+  <b>
+   ${game.owned.length}
+   Item
+  </b>
+
+ </div>
+
+
+ ${
+  game.owned.length===0
+
+  ?
+
+  `
+  <div class="card">
+
+   <h3>
+    📦 Gudang kosong
+   </h3>
+
+   <p class="muted">
+    Menangkan auction
+    atau beli item dari Market.
+   </p>
+
+   <button
+    onclick="showPage('auction')"
+   >
+    🔨 Lelang
+   </button>
+
+  </div>
+  `
+
+  :
+
+  `
+  <div class="grid">
+
+   ${game.owned.map(
+    (item,index)=>`
+
+    <div
+     class="item rarity-${item[3]}"
+    >
+
+     <div class="icon">
+      ${item[1]}
+     </div>
+
+     <b>
+      ${item[0]}
+     </b>
+
+     <p class="muted">
+      ${item[3]}
+     </p>
+
+     <div class="price">
+      🪙 ${money(item[2])}
+     </div>
+
+     <div class="muted">
+      Harga beli:
+      🪙 ${money(item[4]||item[2])}
+     </div>
+
+     <div class="sellBox">
+
+      <input
+       id="sellPrice${index}"
+       type="number"
+       value="${Math.floor(
+        Number(item[2])*1.1
+       )}"
+      >
+
+      <button
+       class="green"
+       style="width:100%"
+       onclick="jualItem(${index})"
+      >
+       💵 JUAL KE BOT
+      </button>
+
+     </div>
+
+    </div>
+
+   `).join("")}
+
+  </div>
+  `
+ }
+
+ `;
+
+}
+
+
+/* =====================================================
+   JUAL ITEM
+===================================================== */
+
+function jualItem(index){
+
+ const item=
+  game.owned[index];
+
+ if(!item)
+  return;
+
+ const input=
+  document.getElementById(
+   "sellPrice"+index
+  );
+
+ const price=
+  Number(input.value);
+
+
+ if(!Number.isFinite(price)||price<=0){
+
+  alert(
+   "Masukkan harga yang valid."
+  );
+
+  return;
+
+ }
+
+
+ const bot=
+ botData[
+  Math.floor(
+   Math.random()*botData.length
+  )
+ ];
+
+
+ const min=
+  Number(item[2])*.65;
+
+ const max=
+  Number(item[2])*1.55;
+
+
+ const accepted=
+  price>=min &&
+  price<=max &&
+  Math.random()<
+  .8;
+
+
+ if(!accepted){
+
+  alert(
+
+   "❌ "+
+   bot.name+
+   " menolak harga itu!\n\n"+
+   "Coba turunkan harga."
+
+  );
+
+  return;
+
+ }
+
+
+ if(!confirm(
+
+  "💵 JUAL ITEM\n\n"+
+  item[1]+
+  " "+
+  item[0]+
+  "\n\n"+
+  "Pembeli: "+
+  bot.name+
+  "\n"+
+  "Harga: 🪙 "+
+  money(price)+
+  "\n\n"+
+  "Jual?"
+
+ ))return;
+
+
+ game.owned.splice(
+  index,
+  1
+ );
+
+ game.coins+=price;
+
+ game.stats.totalEarned+=price;
+
+ game.stats.sellFig++;
+
+ gainXP(
+  Math.max(
+   50,
+   Math.floor(price/2000)
+  )
+ );
+
+ save();
+
+ updateCoins();
+
+ alert(
+  "✅ TERJUAL!\n\n"+
+  item[0]+
+  "\n\n"+
+  "+🪙 "+
+  money(price)
+ );
+
+ warehouse();
+
+}
+
+
+/* =====================================================
+   KOLEKSI
+===================================================== */
+
+function collection(){
+
+ let html=`
+
+ <div class="hero">
+
+  <h2>👑 Koleksi</h2>
+
+  <p>
+   Figurine menghasilkan
+   passive income setiap jam.
+  </p>
+
+  <b>
+   ⚡ +${money(totalIncome())}/jam
+  </b>
+
+ </div>
+
+
+ <h3>
+  🗿 Figurine
+ </h3>
+
+ <div class="grid">
+
+ ${s.map(
+  (fig,index)=>{
+
+   const sell=
+    Math.floor(fig.value*.8);
+
+   return `
+
+   <div
+    class="item
+    figure
+    rarity-${fig.rarity}"
+   >
+
+    <div class="glow"></div>
+
+    <div class="icon">
+     ${fig.icon}
+    </div>
+
+    <b>
+     ${fig.name}
+    </b>
+
+    <p class="muted">
+     ${fig.rarity}
+    </p>
+
+    <div class="price">
+     🪙 ${money(fig.value)}
+    </div>
+
+    <div class="muted">
+     ⚡ +
+     ${money(fig.income*3600)}
+     /jam
+    </div>
+
+    <p>
+     Dimiliki:
+     <b>
+      ${game.figs[index]||0}
+     </b>
+    </p>
+
+    <button
+     onclick="buyFig(${index})"
+    >
+     🛒 Beli
+    </button>
+
+    <button
+     class="danger"
+     ${(game.figs[index]||0)<=0?"disabled":""}
+     onclick="sellFig(${index})"
+    >
+     💵 Jual
+    </button>
+
+    <div class="muted">
+     Jual:
+     🪙 ${money(sell)}
+    </div>
+
+   </div>
+
+   `;
+
+  }
+
+ ).join("")}
+
+ </div>
+ `;
+
+
+ if(game.rareFigs.length){
+
+  html+=`
+
+  <h3>
+   💎 Figurine Langka
+  </h3>
+
+  <div class="grid">
+
+  ${game.rareFigs.map(
+   (fig,index)=>`
+
+   <div
+    class="item
+    figure
+    rarity-${fig.rarity}"
+   >
+
+    <div class="glow"></div>
+
+    <div class="icon">
+     ${fig.icon}
+    </div>
+
+    <b>
+     ${fig.name}
+    </b>
+
+    <p class="muted">
+     ${fig.rarity}
+    </p>
+
+    <div class="price">
+     🪙 ${money(fig.value)}
+    </div>
+
+    <div class="muted">
+     ⚡ +
+     ${money(fig.income*3600)}
+     /jam
+    </div>
+
+    <p>
+     Dimiliki:
+     <b>
+      ${fig.qty||1}
+     </b>
+    </p>
+
+    <button
+     class="danger"
+     onclick="sellRareFig(${index})"
+    >
+     💵 Jual 1
+    </button>
+
+   </div>
+
+   `
+  ).join("")}
+
+  </div>
+
+  `;
+
+ }
+
+
+ document.getElementById(
+  "page"
+ ).innerHTML=html;
+
+}
+
+
+/* =====================================================
+   BUY / SELL FIGURINE
+===================================================== */
+
+function buyFig(index){
+
+ const fig=
+  s[index];
+
+ if(game.coins<fig.value){
+
+  alert(
+   "❌ Coins tidak cukup.\n\n"+
+   "Harga: 🪙 "+
+   money(fig.value)
+  );
+
+  return;
+
+ }
+
+
+ game.coins-=fig.value;
+
+ game.stats.totalSpent+=
+  fig.value;
+
+ game.figs[index]++;
+
+ game.stats.buyFig++;
+
+ gainXP(50);
+
+ save();
+
+ updateCoins();
+
+ collection();
+
+}
+
+
+function sellFig(index){
+
+ const fig=
+  s[index];
+
+ if((game.figs[index]||0)<=0){
+
+  alert(
+   "❌ Tidak punya item."
+  );
+
+  return;
+
+ }
+
+
+ const price=
+  Math.floor(fig.value*.8);
+
+
+ if(!confirm(
+
+  "💵 JUAL\n\n"+
+  fig.icon+
+  " "+
+  fig.name+
+  "\n\n"+
+  "Harga jual:\n"+
+  "🪙 "+
+  money(price)+
+  "\n\nYakin?"
+
+ ))return;
+
+
+ game.figs[index]--;
+
+ game.coins+=price;
+
+ game.stats.totalEarned+=price;
+
+ game.stats.sellFig++;
+
+ gainXP(30);
+
+ save();
+
+ updateCoins();
+
+ collection();
+
+}
+
+
+/* =====================================================
+   FIGURINE LANGKA
+===================================================== */
+
+function openRareShop(){
+
+ document.getElementById(
+  "page"
+ ).innerHTML=`
+
+ <div class="hero">
+
+  <h2>
+   🏪 Toko Figurine Langka
+  </h2>
+
+  <p>
+   Figurine dengan income besar.
+  </p>
+
+  <b>
+   💎 Stock permanen
+  </b>
+
+ </div>
+
+
+ <div class="grid">
+
+ ${tokoFigurine.map(
+  (fig,index)=>`
+
+  <div
+   class="item
+   figure
+   rarity-${fig.rarity}"
+  >
+
+   <div class="glow"></div>
+
+   <div class="icon">
+    ${fig.icon}
+   </div>
+
+   <b>
+    ${fig.name}
+   </b>
+
+   <p class="muted">
+    ${fig.rarity}
+   </p>
+
+   <div class="price">
+    🪙 ${money(fig.value)}
+   </div>
+
+   <div class="muted">
+    ⚡ +
+    ${money(fig.income*3600)}
+    /jam
+   </div>
+
+   <button
+    onclick="buyTokoFig(${index})"
+   >
+    💎 BELI
+   </button>
+
+  </div>
+
+ `).join("")}
+
+ </div>
+
+ `;
+
+}
+
+
+function buyTokoFig(index){
+
+ const fig=
+  tokoFigurine[index];
+
+ if(game.coins<fig.value){
+
+  alert(
+   "❌ Coins tidak cukup!\n\n"+
+   "Harga: 🪙 "+
+   money(fig.value)
+  );
+
+  return;
+
+ }
+
+
+ if(!confirm(
+
+  "💎 BELI FIGURINE\n\n"+
+  fig.icon+
+  " "+
+  fig.name+
+  "\n\n"+
+  "Harga: 🪙 "+
+  money(fig.value)+
+  "\n"+
+  "Income: +"+
+  money(fig.income*3600)+
+  "/jam\n\n"+
+  "Beli?"
+
+ ))return;
+
+
+ game.coins-=fig.value;
+
+ game.stats.totalSpent+=
+  fig.value;
+
+
+ const existing=
+  game.rareFigs.find(
+   x=>x.name===fig.name
+  );
+
+
+ if(existing){
+
+  existing.qty=
+   (Number(existing.qty)||1)+1;
+
+ }else{
+
+  game.rareFigs.push({
+   ...fig,
+   qty:1
+  });
+
+ }
+
+
+ gainXP(250);
+
+ save();
+
+ updateCoins();
+
+ alert(
+  "🎉 BERHASIL!\n\n"+
+  fig.name+
+  "\n\n"+
+  "Masuk ke Koleksi."
+ );
+
+ collection();
+
+}
+
+
+/* =====================================================
+   SELL RARE
+===================================================== */
+
+function sellRareFig(index){
+
+ const fig=
+  game.rareFigs[index];
+
+ if(!fig)
+  return;
+
+
+ const price=
+  Math.floor(
+   Number(fig.value)*.8
+  );
+
+
+ if(!confirm(
+
+  "💵 JUAL FIGURINE LANGKA\n\n"+
+  fig.icon+
+  " "+
+  fig.name+
+  "\n\n"+
+  "Dapat:\n"+
+  "🪙 "+
+  money(price)+
+  "\n\n"+
+  "Jual 1?"
+
+ ))return;
+
+
+ const qty=
+  Number(fig.qty)||1;
+
+
+ if(qty>1){
+
+  fig.qty=qty-1;
+
+ }else{
+
+  game.rareFigs.splice(
+   index,
+   1
+  );
+
+ }
+
+
+ game.coins+=price;
+
+ game.stats.totalEarned+=price;
+
+ gainXP(100);
+
+ save();
+
+ updateCoins();
+
+ collection();
+
+}
+
+
+/* =====================================================
+   MYSTERY BOX
+===================================================== */
+
+function mysteryBox(){
+
+ const price=100000;
+
+
+ if(game.coins<price){
+
+  alert(
+   "❌ Coins tidak cukup.\n\n"+
+   "Harga: 🪙 "+
+   money(price)
+  );
+
+  return;
+
+ }
+
+
+ if(!confirm(
+
+  "📦 MYSTERY BOX\n\n"+
+  "Harga: 🪙 "+
+  money(price)+
+  "\n\nBuka?"
+
+ ))return;
+
+
+ game.coins-=price;
+
+ game.stats.totalSpent+=price;
+
+ game.stats.mysteryOpened++;
+
+
+ const roll=
+  Math.random();
+
+ let pool;
+
+
+ if(roll<.45){
+
+  pool=
+   items.filter(
+    x=>x[3]==="Rare"
+   );
+
+ }else if(roll<.75){
+
+  pool=
+   items.filter(
+    x=>x[3]==="Epic"
+   );
+
+ }else if(roll<.94){
+
+  pool=
+   items.filter(
+    x=>x[3]==="Legendary"
+   );
+
+ }else{
+
+  pool=
+   items.filter(
+    x=>x[3]==="Mythic"
+   );
+
+ }
+
+
+ const item=
+  pool[
+   Math.floor(
+    Math.random()*pool.length
+   )
+  ];
+
+
+ game.owned.push([
+
+  item[0],
+  item[1],
+  item[2],
+  item[3],
+  price
+
+ ]);
+
+
+ gainXP(200);
+
+ save();
+
+ updateCoins();
+
+
+ alert(
+
+  "📦 MYSTERY BOX!\n\n"+
+  item[1]+
+  " "+
+  item[0]+
+  "\n\n"+
+  "Rarity: "+
+  item[3]+
+  "\n"+
+  "Nilai: 🪙 "+
+  money(item[2])+
+  "\n\n"+
+  "Masuk Gudang!"
+
+ );
+
+
+ warehouse();
+
+}
+
+
+/* =====================================================
+   MARKET
+===================================================== */
+
+function marketPrice(item){
+
+ const key=
+  item[0];
+
+
+ if(!game.market[key]){
+
+  game.market[key]=
+   1+
+   (Math.random()*.3-.15);
+
+ }
+
+
+ game.market[key]+=
+  Math.random()*.04-.02;
+
+
+ game.market[key]=
+  Math.max(
+   .5,
+   Math.min(
+    1.8,
+    game.market[key]
+   )
+  );
+
+
+ return Math.floor(
+  item[2]*
+  game.market[key]
+ );
+
+}
+
+
+function showMarket(){
+
+ const sample=
+  [...items]
+  .sort(
+   ()=>Math.random()-.5
+  )
+  .slice(0,8);
+
+
+ document.getElementById(
+  "page"
+ ).innerHTML=`
+
+ <div class="hero">
+
+  <h2>📈 Market</h2>
+
+  <p>
+   Harga bisa naik atau turun.
+  </p>
+
+ </div>
+
+
+ <div class="grid">
+
+ ${sample.map(item=>{
+
+  const price=
+   marketPrice(item);
+
+  const ratio=
+   price/item[2];
+
+  const up=
+   ratio>=1;
+
+  return `
+
+  <div
+   class="item
+   rarity-${item[3]}"
+  >
+
+   <div class="icon">
+    ${item[1]}
+   </div>
+
+   <b>
+    ${item[0]}
+   </b>
+
+   <div class="muted">
+    ${item[3]}
+   </div>
+
+   <div class="price">
+    🪙 ${money(price)}
+   </div>
+
+   <div class="${up?
+    "market-up":
+    "market-down"}">
+
+    ${up?"📈":"📉"}
+    ${Math.round(
+     (ratio-1)*100
+    )}%
+
+   </div>
+
+   <button
+    onclick="
+     marketBuy(
+      '${encodeURIComponent(item[0])}'
+     )
+    "
+   >
+    🛒 Beli
+   </button>
+
+  </div>
+
+  `;
+
+ }).join("")}
+
+ </div>
+
+
+ <button
+  onclick="showMarket()"
+ >
+  🔄 Refresh
+ </button>
+
+ `;
+
+}
+
+
+function marketBuy(encoded){
+
+ const name=
+  decodeURIComponent(encoded);
+
+ const item=
+  items.find(
+   x=>x[0]===name
+  );
+
+ if(!item)
+  return;
+
+
+ const price=
+  marketPrice(item);
+
+
+ if(game.coins<price){
+
+  alert(
+   "❌ Coins tidak cukup."
+  );
+
+  return;
+
+ }
+
+
+ if(!confirm(
+
+  "🛒 BELI MARKET?\n\n"+
+  item[1]+
+  " "+
+  item[0]+
+  "\n\n"+
+  "Harga:\n"+
+  "🪙 "+
+  money(price)
+
+ ))return;
+
+
+ game.coins-=price;
+
+ game.stats.totalSpent+=price;
+
+ game.owned.push([
+
+  item[0],
+  item[1],
+  item[2],
+  item[3],
+  price
+
+ ]);
+
+
+ gainXP(100);
+
+ save();
+
+ updateCoins();
+
+ alert(
+  "✅ Item masuk Gudang!"
+ );
+
+ warehouse();
+
+}
+
+
+/* =====================================================
+   ACHIEVEMENT
+===================================================== */
+
+const achievements=[
+
+ {
+  id:"first",
+  icon:"🛒",
+  name:"Pembeli Pertama",
+  desc:"Beli figurine pertama.",
+  test:()=>game.stats.buyFig>=1
+ },
+
+ {
+  id:"auction10",
+  icon:"🔨",
+  name:"Pemburu Lelang",
+  desc:"Menang 10 auction.",
+  test:()=>game.stats.auctionWins>=10
+ },
+
+ {
+  id:"million",
+  icon:"💰",
+  name:"Jutawan",
+  desc:"Aset mencapai 1 juta.",
+  test:()=>totalAssets()>=1000000
+ },
+
+ {
+  id:"mythic",
+  icon:"💎",
+  name:"Pemburu Mythic",
+  desc:"Miliki 5 Mythic.",
+  test:()=>countMythic()>=5
+ },
+
+ {
+  id:"collector",
+  icon:"👑",
+  name:"Kolektor",
+  desc:"Miliki 10 item.",
+  test:()=>totalOwnedCount()>=10
+ },
+
+ {
+  id:"rich",
+  icon:"🤑",
+  name:"Sultan",
+  desc:"Aset mencapai 10 juta.",
+  test:()=>totalAssets()>=10000000
+ },
+
+ {
+  id:"daily",
+  icon:"🎁",
+  name:"Setia Bermain",
+  desc:"Klaim daily reward 7 kali.",
+  test:()=>game.stats.dailyClaims>=7
+ },
+
+ {
+  id:"world",
+  icon:"🌌",
+  name:"Penjelajah Dimensi",
+  desc:"Mencapai Divine Realm.",
+  test:()=>game.world>=6
+ }
+
+];
+
+
+function showAchievements(){
+
+ achievements.forEach(a=>{
+
+  if(
+   a.test() &&
+   !game.claimedAchievements.includes(a.id)
+  ){
+
+   game.claimedAchievements.push(a.id);
+
+   game.coins+=25000;
+
+   game.stats.totalEarned+=25000;
+
+   alert(
+    "🏆 ACHIEVEMENT!\n\n"+
+    a.icon+
+    " "+
+    a.name+
+    "\n\n"+
+    "Reward:\n"+
+    "🪙 25.000"
+   );
+
+  }
+
+ });
+
+
+ save();
+
+ updateCoins();
+
+
+ document.getElementById(
+  "page"
+ ).innerHTML=`
+
+ <div class="hero">
+
+  <h2>
+   🏆 Achievement
+  </h2>
+
+  <p>
+   Selesaikan berbagai tantangan.
+  </p>
+
+ </div>
+
+
+ ${achievements.map(a=>{
+
+  const done=
+   game.claimedAchievements
+   .includes(a.id)||
+   a.test();
+
+  return `
+
+  <div
+   class="achievement
+   ${done?"done":""}"
+  >
+
+   <div class="aicon">
+    ${a.icon}
+   </div>
+
+   <div style="flex:1">
+
+    <b>
+     ${a.name}
+    </b>
+
+    <div class="muted">
+     ${a.desc}
+    </div>
+
+   </div>
+
+   <div>
+    ${done?"✅":"🔒"}
+   </div>
+
+  </div>
+
+  `;
+
+ }).join("")}
+
+
+ <button
+  onclick="lobby()"
+ >
+  ⬅️ Kembali
+ </button>
+
+ `;
+
+}
+
+
+/* =====================================================
+   STATISTIK
+===================================================== */
+
+function showStats(){
+
+ document.getElementById(
+  "page"
+ ).innerHTML=`
+
+ <div class="hero">
+
+  <h2>📊 Statistik</h2>
+
+  <p>
+   Perjalanan akunmu.
+  </p>
+
+ </div>
+
+
+ <div class="grid">
+
+  <div class="stat">
+   <b>${game.stats.auctionsPlayed}</b>
+   <div class="muted">
+    Auction
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.auctionWins}</b>
+   <div class="muted">
+    Menang
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.auctionLosses}</b>
+   <div class="muted">
+    Kalah
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.buyFig}</b>
+   <div class="muted">
+    Figurine Dibeli
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.sellFig}</b>
+   <div class="muted">
+    Figurine Dijual
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.mysteryOpened}</b>
+   <div class="muted">
+    Mystery Box
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.stats.dailyClaims}</b>
+   <div class="muted">
+    Daily Reward
+   </div>
+  </div>
+
+  <div class="stat">
+   <b>${game.level}</b>
+   <div class="muted">
+    Level
+   </div>
+  </div>
+
+ </div>
+
+
+ <div class="card">
+
+  <h3>
+   💰 Keuangan
+  </h3>
+
+  <p>
+   🟢 Total masuk:
+   <b>
+    🪙 ${money(game.stats.totalEarned)}
+   </b>
+  </p>
+
+  <p>
+   🔴 Total keluar:
+   <b>
+    🪙 ${money(game.stats.totalSpent)}
+   </b>
+  </p>
+
+  <p>
+   💎 Aset:
+   <b>
+    🪙 ${money(totalAssets())}
+   </b>
+  </p>
+
+ </div>
+
+
+ <button
+  onclick="lobby()"
+ >
+  ⬅️ Kembali
+ </button>
+
+ `;
+
+}
+
+
+/* =====================================================
+   EXPORT SAVE
+===================================================== */
+
+function exportSave(){
+
+ const data=
+  JSON.stringify(
+   game,
+   null,
+   2
+  );
+
+ const blob=
+  new Blob(
+   [data],
+   {
+    type:"application/json"
+   }
+  );
+
+ const url=
+  URL.createObjectURL(blob);
+
+ const a=
+  document.createElement("a");
+
+ a.href=url;
+
+ a.download=
+  "magic-auction-save.json";
+
+ a.click();
+
+ URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   IMPORT SAVE
+===================================================== */
+
+document
+.getElementById("importFile")
+.addEventListener(
+ "change",
+ function(e){
+
+  const file=
+   e.target.files[0];
+
+  if(!file)
+   return;
+
+
+  const reader=
+   new FileReader();
+
+
+  reader.onload=function(){
+
+   try{
+
+    const imported=
+     JSON.parse(
+      reader.result
+     );
+
+    if(
+     !imported||
+     typeof imported!=="object"
+    ){
+
+     throw new Error(
+      "File save tidak valid."
+     );
+
+    }
+
+
+    localStorage.setItem(
+     "magicAuction2",
+     JSON.stringify(imported)
+    );
+
+
+    alert(
+     "✅ Save berhasil di-import!"
+    );
+
+
+    location.reload();
+
+
+   }catch(err){
+
+    alert(
+     "❌ Import gagal:\n"+
+     err.message
+    );
+
+   }
+
+  };
+
+
+  reader.readAsText(file);
+
+ }
+);
+
+
+/* =====================================================
+   RESET GAME
+===================================================== */
+
+function resetGame(){
+
+ if(!confirm(
+
+  "⚠️ RESET GAME?\n\n"+
+  "Semua progress akan hilang.\n\n"+
+  "Lanjut?"
+
+ ))return;
+
+
+ localStorage.removeItem(
+  "magicAuction2"
+ );
+
+ location.reload();
+
+}
+
+
+/* =====================================================
+   MULAI
+===================================================== */
+
+collectPassiveIncome();
+
+updateCoins();
+
+showPage("lobby");
+
+
+/* Cek income setiap menit */
+
+setInterval(
+ collectPassiveIncome,
+ 60000
+);
+
+</script>
+
+</body>
+</html>
