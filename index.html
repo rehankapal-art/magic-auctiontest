@@ -428,6 +428,14 @@ button:disabled{
 
 <script>
 
+const SUPABASE_URL = "https://obhsctubxlhiefnovdbl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ComgKc_IWG_i7nMWWksLbQ_Qqa7wXcT";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+ 
 /* =====================================================
    PLAYER
 ===================================================== */
