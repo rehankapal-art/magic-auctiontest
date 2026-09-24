@@ -545,6 +545,138 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+
+ async function registerAccount(){
+
+  const username =
+    document.getElementById("accountUsername").value.trim();
+
+  const email =
+    document.getElementById("accountEmail").value.trim();
+
+  const password =
+    document.getElementById("accountPassword").value;
+
+  const msg =
+    document.getElementById("accountMessage");
+
+  if(!username || !email || !password){
+    msg.textContent = "❌ Semua kolom harus diisi.";
+    return;
+  }
+
+  if(password.length < 6){
+    msg.textContent = "❌ Password minimal 6 karakter.";
+    return;
+  }
+
+  msg.textContent = "⏳ Membuat akun...";
+
+  const {data,error} =
+    await supabaseClient.auth.signUp({
+      email:email,
+      password:password,
+      options:{
+        data:{
+          username:username
+        }
+      }
+    });
+
+  if(error){
+    msg.textContent = "❌ " + error.message;
+    return;
+  }
+
+  if(data.user){
+
+    if(data.session){
+
+      await createPlayerProfile(
+        data.user,
+        username
+      );
+
+      msg.textContent =
+        "✅ Akun berhasil dibuat!";
+
+      document.getElementById("accountBox").style.display="none";
+
+    }else{
+
+      msg.textContent =
+        "✅ Akun dibuat. Cek email untuk konfirmasi akun.";
+    }
+  }
+ }
+
+ async function loginAccount(){
+
+  const email =
+    document.getElementById("accountEmail").value.trim();
+
+  const password =
+    document.getElementById("accountPassword").value;
+
+  const msg =
+    document.getElementById("accountMessage");
+
+  if(!email || !password){
+    msg.textContent =
+      "❌ Email dan password harus diisi.";
+    return;
+  }
+
+  msg.textContent = "⏳ Login...";
+
+  const {data,error} =
+    await supabaseClient.auth.signInWithPassword({
+      email:email,
+      password:password
+    });
+
+  if(error){
+    msg.textContent =
+      "❌ " + error.message;
+    return;
+  }
+
+  await loadCloudSave(data.user);
+
+  document.getElementById("accountBox").style.display="none";
+
+  render();
+
+  if(typeof renderDailyQuests === "function"){
+    renderDailyQuests();
+  }
+ }
+
+ async function createPlayerProfile(user, username){
+
+  const {data,error} =
+    await supabaseClient
+      .from("players")
+      .insert({
+        id:user.id,
+        username:username,
+        coins:game.coins,
+        diamonds:game.diamonds || 0,
+        level:game.level || 1,
+        xp:game.xp || 0,
+        collection:game.collection || [],
+        daily_quest:game.dailyQuest || {}
+      })
+      .select()
+      .single();
+
+  if(error){
+    console.error("Gagal membuat profile:",error);
+    return null;
+  }
+
+  return data;
+ }
  
 /* =====================================================
    PLAYER
