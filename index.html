@@ -372,6 +372,116 @@ button:disabled{
 
 <body>
 
+<div id="accountBox" style="
+  position:fixed;
+  inset:0;
+  background:#0d1220;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+">
+  <div style="
+    width:100%;
+    max-width:400px;
+    background:#151b2b;
+    border:1px solid #303a58;
+    border-radius:20px;
+    padding:22px;
+  ">
+    <h2 style="margin-top:0">🎮 Magic Auction</h2>
+
+    <input
+      id="accountUsername"
+      placeholder="Nama pemain"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin:7px 0;
+        border-radius:10px;
+        border:1px solid #39445f;
+        background:#20283b;
+        color:white;
+      "
+    >
+
+    <input
+      id="accountEmail"
+      type="email"
+      placeholder="Email"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin:7px 0;
+        border-radius:10px;
+        border:1px solid #39445f;
+        background:#20283b;
+        color:white;
+      "
+    >
+
+    <input
+      id="accountPassword"
+      type="password"
+      placeholder="Password"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin:7px 0;
+        border-radius:10px;
+        border:1px solid #39445f;
+        background:#20283b;
+        color:white;
+      "
+    >
+
+    <button
+      onclick="registerAccount()"
+      style="
+        width:100%;
+        padding:13px;
+        margin-top:10px;
+        border:0;
+        border-radius:10px;
+        background:#5869ff;
+        color:white;
+        font-weight:700;
+      "
+    >
+      📝 BUAT AKUN
+    </button>
+
+    <button
+      onclick="loginAccount()"
+      style="
+        width:100%;
+        padding:13px;
+        margin-top:8px;
+        border:1px solid #5869ff;
+        border-radius:10px;
+        background:transparent;
+        color:white;
+        font-weight:700;
+      "
+    >
+      🔐 LOGIN
+    </button>
+
+    <div id="accountMessage"
+      style="
+        margin-top:12px;
+        font-size:13px;
+        color:#aeb8d0;
+        text-align:center;
+      "
+    ></div>
+  </div>
+</div>
+ 
 <div class="app">
 
 <header>
